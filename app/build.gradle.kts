@@ -60,6 +60,9 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
+    implementation(libs.androidx.paging.runtime)
+    implementation(libs.androidx.paging.compose)
+
     implementation(libs.androidx.hilt.navigation)
     implementation(libs.dagger.hilt.android)
     ksp(libs.dagger.hilt.compiler)
@@ -73,6 +76,8 @@ dependencies {
 
     implementation(libs.squareup.okhttp)
     implementation(libs.squareup.logging.interceptor)
+
+    implementation(libs.coil)
 
     implementation(libs.timber)
 

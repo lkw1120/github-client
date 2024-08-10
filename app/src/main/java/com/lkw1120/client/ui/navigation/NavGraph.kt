@@ -22,12 +22,18 @@ fun NavGraph(
         composable(
             route = NavScreen.SearchScreen.route
         ) {
-            SearchScreen()
+            SearchScreen { userName ->
+                navController.navigate(
+                    NavScreen.DetailScreen.route + "/$userName",
+                )
+            }
         }
         composable(
-            route = NavScreen.DetailScreen.route
+            route = NavScreen.DetailScreen.route + "/{userName}"
         ) {
-            DetailScreen()
+            DetailScreen(
+                userName = it.arguments?.getString("userName")!!
+            )
         }
     }
 }
