@@ -7,7 +7,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 @Composable
 fun DetailScreen(
     modifier: Modifier = Modifier,
-    viewModel: DetailViewModel = hiltViewModel()
+    viewModel: DetailViewModel = hiltViewModel(),
+    userName: String
 ) {
 
 }
