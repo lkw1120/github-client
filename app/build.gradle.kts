@@ -62,6 +62,7 @@ dependencies {
 
     implementation(libs.androidx.paging.runtime)
     implementation(libs.androidx.paging.compose)
+    implementation(libs.androidx.browser)
 
     implementation(libs.androidx.hilt.navigation)
     implementation(libs.dagger.hilt.android)
