@@ -33,7 +33,9 @@ fun NavGraph(
         ) {
             DetailScreen(
                 userName = it.arguments?.getString("userName")!!
-            )
+            ) {
+                navController.popBackStack()
+            }
         }
     }
 }
