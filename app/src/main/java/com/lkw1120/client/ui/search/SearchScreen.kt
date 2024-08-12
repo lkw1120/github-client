@@ -1,18 +1,16 @@
 package com.lkw1120.client.ui.search
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.SearchBar
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -28,87 +26,102 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.lkw1120.client.R
+import com.lkw1120.client.ui.component.EmptyState
+import com.lkw1120.client.ui.component.ErrorState
+import com.lkw1120.client.ui.component.LoadingState
 import com.lkw1120.client.ui.component.UserItem
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchScreen(
     modifier: Modifier = Modifier,
     viewModel: SearchViewModel = hiltViewModel(),
-    onNavigate: (userName: String) -> Unit
+    goUserDetail: (userName: String) -> Unit
 ) {
-
     val context = LocalContext.current
     val configuration = LocalConfiguration.current
+
+    Column(
+        modifier = Modifier,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        SearchBarScreen(
+            viewModel = viewModel
+        )
+        UserListScreen(
+            viewModel = viewModel,
+            goUserDetail = goUserDetail
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SearchBarScreen(
+    modifier: Modifier = Modifier,
+    viewModel: SearchViewModel
+) {
     val focusManager = LocalFocusManager.current
-
-    val width = configuration.screenWidthDp.dp
-    val height = configuration.screenHeightDp.dp
-
     var query by remember { mutableStateOf("") }
 
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .padding(8.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        SearchBar(
+            modifier = Modifier,
+            windowInsets = WindowInsets(0.dp),
+            query = query,
+            onQueryChange = {
+                query = it
+            },
+            onSearch = {
+                viewModel.getUserList(query)
+                focusManager.clearFocus()
+            },
+            active = false,
+            onActiveChange = {},
+            placeholder = {
+                Text(
+                    text = stringResource(id = R.string.search)
+                )
+            },
+            leadingIcon = {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_search),
+                    contentDescription = null,
+                )
+            },
+            content = {}
+        )
+    }
+}
+
+@Composable
+fun UserListScreen(
+    modifier: Modifier = Modifier,
+    viewModel: SearchViewModel,
+    goUserDetail: (userName: String) -> Unit
+) {
     val userList = viewModel.userItemList.collectAsLazyPagingItems()
 
-    Surface(
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight()
-                    .padding(8.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                SearchBar(
-                    modifier = Modifier,
-                    query = query,
-                    onQueryChange = {
-                        query = it
-                    },
-                    onSearch = {
-                        viewModel.getUserList(query)
-                        focusManager.clearFocus()
-                    },
-                    active = false,
-                    onActiveChange = {
-
-                    },
-                    placeholder = {
-                        Text(
-                            text = stringResource(id = R.string.search)
-                        )
-                    },
-                    leadingIcon = {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_search),
-                            contentDescription = null,
-                        )
-                    },
-                    content = {}
-                )
-            }
+    when(val loadState = userList.loadState.refresh) {
+        is LoadState.Loading -> {
+            LoadingState()
+        }
+        is LoadState.Error -> {
+            ErrorState(
+                message = loadState.error.message
+            )
+        }
+        is LoadState.NotLoading -> {
             if(userList.itemCount == 0) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Image(
-                        modifier = Modifier
-                            .width(width * 0.5f)
-                            .wrapContentHeight(),
-                        painter = painterResource(id = R.drawable.ic_inspectocat),
-                        contentDescription = null,
-                    )
-                }
+                EmptyState()
             }
             else {
                 LazyColumn(
@@ -120,7 +133,9 @@ fun SearchScreen(
                         userList[index]?.let { item ->
                             UserItem(
                                 item = item,
-                                onClick = { onNavigate(item.login) }
+                                onClick = {
+                                    goUserDetail(item.login)
+                                }
                             )
                         }
                     }

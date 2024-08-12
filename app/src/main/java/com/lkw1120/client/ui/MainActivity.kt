@@ -5,7 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Surface
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.lkw1120.client.ui.navigation.NavGraph
@@ -24,9 +25,9 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 val startDestination = NavScreen.SearchScreen.route
 
-                Surface(modifier = Modifier.fillMaxSize()) {
+                Scaffold(modifier = Modifier.fillMaxSize()) {
                     NavGraph(
-                        modifier = Modifier,
+                        modifier = Modifier.padding(it),
                         navController = navController,
                         startDestination = startDestination,
                     )
