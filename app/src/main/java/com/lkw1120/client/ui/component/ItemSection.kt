@@ -24,7 +24,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
@@ -67,6 +66,7 @@ fun UserItem(
                         .clip(CircleShape),
                     model = item.avatarUrl,
                     placeholder = painterResource(id = R.drawable.ic_profile),
+                    error = painterResource(id = R.drawable.ic_profile),
                     contentDescription = null,
                 )
             }
@@ -86,8 +86,6 @@ fun RepoItem(
     item: RepoItem,
     onClick: () -> Unit
 ) {
-    val context = LocalContext.current
-
     Card(
         modifier = Modifier
             .fillMaxWidth()
