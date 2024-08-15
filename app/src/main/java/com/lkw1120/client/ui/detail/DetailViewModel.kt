@@ -40,7 +40,7 @@ class DetailViewModel @Inject constructor(
         _userDetail.value = usersUseCase.getUserDetail(userName)
     }
 
-    fun getUserRepos(userName: String) = workerScope.launch {
+    fun getRepoList(userName: String) = workerScope.launch {
         Pager(
             PagingConfig(
                 pageSize = PAGE_SIZE,

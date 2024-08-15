@@ -24,6 +24,10 @@ coil = "2.7.0"
 
 timber = "5.0.1"
 
+kotlinxCoroutines = "1.9.0-RC"
+mockito = "5.12.0"
+mockitoInline = "5.2.0"
+mockitoKotlin = "5.4.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -62,6 +66,13 @@ squareup-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging
 coil = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
+
+mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockito" }
+mockito-inline = { group = "org.mockito", name = "mockito-inline", version.ref = "mockitoInline" }
+mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version.ref = "mockitoKotlin" }
+squareup-okhttp-mockserver = { module = "com.squareup.okhttp3:mockwebserver", version.ref = "okhttp" }
+kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
+kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

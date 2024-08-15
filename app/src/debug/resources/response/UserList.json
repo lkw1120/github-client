@@ -1,0 +1,27 @@
+{
+  "total_count": 1,
+  "incomplete_results": false,
+  "items": [
+    {
+      "login": "lkw1120",
+      "id": 15232122,
+      "node_id": "MDQ6VXNlcjE1MjMyMTIy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/15232122?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lkw1120",
+      "html_url": "https://github.com/lkw1120",
+      "followers_url": "https://api.github.com/users/lkw1120/followers",
+      "following_url": "https://api.github.com/users/lkw1120/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lkw1120/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lkw1120/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lkw1120/subscriptions",
+      "organizations_url": "https://api.github.com/users/lkw1120/orgs",
+      "repos_url": "https://api.github.com/users/lkw1120/repos",
+      "events_url": "https://api.github.com/users/lkw1120/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lkw1120/received_events",
+      "type": "User",
+      "site_admin": false,
+      "score": 1.0
+    }
+  ]
+}

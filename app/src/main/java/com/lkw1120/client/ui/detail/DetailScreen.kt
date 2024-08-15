@@ -57,7 +57,7 @@ fun DetailScreen(
 
     SideEffect {
         viewModel.getUserDetail(userName)
-        viewModel.getUserRepos(userName)
+        viewModel.getRepoList(userName)
     }
     Column(
         modifier = Modifier
