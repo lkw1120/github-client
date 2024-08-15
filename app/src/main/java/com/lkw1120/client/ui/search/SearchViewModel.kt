@@ -20,10 +20,10 @@ class SearchViewModel @Inject constructor(
     private val usersUseCase: UsersUseCase
 ): BaseViewModel() {
 
-    private var _userItemList: MutableStateFlow<PagingData<UserItem>> =
+    private var _userList: MutableStateFlow<PagingData<UserItem>> =
         MutableStateFlow(PagingData.empty())
-    val userItemList: Flow<PagingData<UserItem>>
-        get() = _userItemList
+    val userList: Flow<PagingData<UserItem>>
+        get() = _userList
 
     fun getUserList(query: String) = workerScope.launch {
         Pager(
@@ -37,7 +37,7 @@ class SearchViewModel @Inject constructor(
                 )
             }
         ).flow.cachedIn(workerScope).collect {
-            _userItemList.value = it
+            _userList.value = it
         }
     }
 

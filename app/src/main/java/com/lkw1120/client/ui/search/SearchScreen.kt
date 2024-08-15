@@ -108,7 +108,7 @@ fun UserListScreen(
     viewModel: SearchViewModel,
     goUserDetail: (userName: String) -> Unit
 ) {
-    val userList = viewModel.userItemList.collectAsLazyPagingItems()
+    val userList = viewModel.userList.collectAsLazyPagingItems()
 
     when(val loadState = userList.loadState.refresh) {
         is LoadState.Loading -> {
