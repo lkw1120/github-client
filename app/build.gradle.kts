@@ -1,3 +1,6 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -5,7 +8,9 @@ plugins {
     alias(libs.plugins.dagger.hilt.android)
     alias(libs.plugins.compose.compiler)
 }
-
+val properties = Properties().apply {
+    load(FileInputStream(rootProject.file("local.properties")))
+}
 android {
     namespace = "com.lkw1120.client"
     compileSdk = 34
@@ -21,6 +26,7 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+        buildConfigField("String", "GITHUB_ACCESS_TOKEN", properties.getProperty("GITHUB_ACCESS_TOKEN"))
     }
 
     buildTypes {
@@ -31,6 +37,9 @@ android {
                 "proguard-rules.pro"
             )
         }
+    }
+    buildFeatures {
+        buildConfig = true
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
