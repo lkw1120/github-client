@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -44,7 +45,8 @@ fun SearchScreen(
     val configuration = LocalConfiguration.current
 
     Column(
-        modifier = Modifier,
+        modifier = Modifier
+            .testTag("searchScreen"),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         SearchBarScreen(
@@ -70,11 +72,13 @@ fun SearchBarScreen(
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .padding(8.dp),
+            .padding(8.dp)
+            .testTag("searchBarScreen"),
         contentAlignment = Alignment.Center
     ) {
         SearchBar(
-            modifier = Modifier,
+            modifier = Modifier
+                .testTag("searchBar"),
             windowInsets = WindowInsets(0.dp),
             query = query,
             onQueryChange = {
@@ -110,33 +114,39 @@ fun UserListScreen(
 ) {
     val userList = viewModel.userList.collectAsLazyPagingItems()
 
-    when(val loadState = userList.loadState.refresh) {
-        is LoadState.Loading -> {
-            LoadingState()
-        }
-        is LoadState.Error -> {
-            ErrorState(
-                message = loadState.error.message
-            )
-        }
-        is LoadState.NotLoading -> {
-            if(userList.itemCount == 0) {
-                EmptyState()
+    Box(
+        modifier = Modifier
+            .testTag("userListScreen")
+    ) {
+        when (val loadState = userList.loadState.refresh) {
+            is LoadState.Loading -> {
+                LoadingState()
             }
-            else {
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    items(userList.itemCount) { index ->
-                        userList[index]?.let { item ->
-                            UserItem(
-                                item = item,
-                                onClick = {
-                                    goUserDetail(item.login)
-                                }
-                            )
+
+            is LoadState.Error -> {
+                ErrorState(
+                    message = loadState.error.message
+                )
+            }
+
+            is LoadState.NotLoading -> {
+                if (userList.itemCount == 0) {
+                    EmptyState()
+                } else {
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                    ) {
+                        items(userList.itemCount) { index ->
+                            userList[index]?.let { item ->
+                                UserItem(
+                                    item = item,
+                                    onClick = {
+                                        goUserDetail(item.login)
+                                    }
+                                )
+                            }
                         }
                     }
                 }

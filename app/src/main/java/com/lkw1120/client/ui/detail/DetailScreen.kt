@@ -30,6 +30,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -61,6 +62,7 @@ fun DetailScreen(
     }
     Column(
         modifier = Modifier
+            .testTag("detailScreen")
     ) {
         UserDetailScreen(
             viewModel = viewModel,
@@ -89,12 +91,14 @@ fun UserDetailScreen(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(152.dp),
+            .height(152.dp)
+            .testTag("userDetailScreen"),
         contentAlignment = Alignment.TopCenter
     ) {
         TopAppBar(
             modifier = Modifier
-                .background(Color.Transparent),
+                .background(Color.Transparent)
+                .testTag("topAppBar"),
             windowInsets = WindowInsets(0.dp),
             title = { },
             actions = {
@@ -102,7 +106,8 @@ fun UserDetailScreen(
                     modifier = Modifier
                         .padding(6.dp, 12.dp)
                         .size(36.dp)
-                        .clickable { goBack() },
+                        .clickable { goBack() }
+                        .testTag("close"),
                     painter = painterResource(id = R.drawable.ic_close),
                     contentDescription = null
                 )
@@ -110,10 +115,12 @@ fun UserDetailScreen(
         )
         Row(
             modifier = Modifier
+                .testTag("userDetail")
         ) {
             Box(
                 modifier = Modifier
                     .padding(16.dp)
+                    .testTag("userProfile")
             ) {
                 AsyncImage(
                     modifier = Modifier
@@ -128,11 +135,14 @@ fun UserDetailScreen(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
+                    .padding(16.dp)
+                    .testTag("userInfo"),
                 verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 if (userDetail.login.isNotBlank()) {
                     Text(
+                        modifier = Modifier
+                            .testTag("userName"),
                         text = userDetail.login,
                         style = TextStyle(
                             fontSize = 24.sp
@@ -140,7 +150,8 @@ fun UserDetailScreen(
                     )
                     if (userDetail.name.isNotBlank()) {
                         Text(
-                            modifier = Modifier,
+                            modifier = Modifier
+                                .testTag("userFullName"),
                             text = userDetail.name,
                             style = TextStyle(
                                 fontSize = 18.sp
@@ -157,6 +168,8 @@ fun UserDetailScreen(
                             contentDescription = null
                         )
                         Text(
+                            modifier = Modifier
+                                .testTag("userFollowers"),
                             text = stringResource(
                                 id = R.string.followers,
                                 userDetail.followers
@@ -176,6 +189,8 @@ fun UserDetailScreen(
                             contentDescription = null
                         )
                         Text(
+                            modifier = Modifier
+                                .testTag("userFollowing"),
                             text = stringResource(
                                 id = R.string.following,
                                 userDetail.following
@@ -199,33 +214,39 @@ fun RepoListScreen(
 ) {
     val repoList = viewModel.repoList.collectAsLazyPagingItems()
 
-    when(val loadState = repoList.loadState.refresh) {
-        is LoadState.Loading -> {
-            LoadingState()
-        }
-        is LoadState.Error -> {
-            ErrorState(
-                message = loadState.error.message
-            )
-        }
-        is LoadState.NotLoading -> {
-            if (repoList.itemCount == 0) {
-                EmptyState()
+    Box(
+        modifier = Modifier
+            .testTag("repoListScreen")
+    ) {
+        when (val loadState = repoList.loadState.refresh) {
+            is LoadState.Loading -> {
+                LoadingState()
             }
-            else {
-                LazyColumn(
-                    modifier = Modifier,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    items(repoList.itemCount) { index ->
-                        if (0 < index) {
-                            HorizontalDivider()
-                        }
-                        repoList[index]?.let { item ->
-                            RepoItem(
-                                item = item,
-                                onClick = { goRepoUrl(item.htmlUrl) }
-                            )
+
+            is LoadState.Error -> {
+                ErrorState(
+                    message = loadState.error.message
+                )
+            }
+
+            is LoadState.NotLoading -> {
+                if (repoList.itemCount == 0) {
+                    EmptyState()
+                } else {
+                    LazyColumn(
+                        modifier = Modifier,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        items(repoList.itemCount) { index ->
+                            if (0 < index) {
+                                HorizontalDivider()
+                            }
+                            repoList[index]?.let { item ->
+                                RepoItem(
+                                    item = item,
+                                    onClick = { goRepoUrl(item.htmlUrl) }
+                                )
+                            }
                         }
                     }
                 }
