@@ -15,8 +15,6 @@ data class RepoItemResp (
     val fullName: String?,
     @field:Json(name = "private")
     val private: Boolean?,
-    @field:Json(name = "owner")
-    val owner: UserItemResp?,
     @field:Json(name = "html_url")
     val htmlUrl: String?,
     @field:Json(name = "description")
